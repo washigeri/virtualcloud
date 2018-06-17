@@ -54,15 +54,16 @@ class ThreadSocket extends Thread {
                 in.read(charArray, 0, postDataI);
                 postData = new String(charArray);
             }
+            System.out.println("Received data from " + insocket.getInetAddress() + " : " + postData);
             out.println("HTTP/1.0 200 OK");
             out.println("Content-Type: text/html; charset=utf-8");
             out.println("Server: MINISERVER");
             // this blank line signals the end of the headers
             out.println("");
             // Send the HTML page
-            out.println("<H1>Welcome to the Mini Server</H1>");
-            out.println("<H2>Request Method->" + request_method + "</H2>");
-            out.println("<H2>Post->" + postData + "</H2>");
+            //out.println("<H1>Welcome to the Mini Server</H1>");
+            //out.println("<H2>Request Method->" + request_method + "</H2>");
+            out.println("<H2>Post-> DATA OK </H2>");
             //out.println("<form name=\"input\" action=\"form_submited\" method=\"post\">");
             //out.println("Username: <input type=\"text\" name=\"user\"><input type=\"submit\" value=\"Submit\"></form>");
             out.close();
