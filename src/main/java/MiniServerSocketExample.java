@@ -1,12 +1,10 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 public class MiniServerSocketExample {
     private static final int PORT = 8080;
+
     public static void main(String[] args) {
         try {
             ServerSocket server = new ServerSocket(PORT);
@@ -18,12 +16,15 @@ public class MiniServerSocketExample {
         }
     }
 }
+
 class ThreadSocket extends Thread {
     private Socket insocket;
+
     ThreadSocket(Socket insocket) {
         this.insocket = insocket;
         this.start();
     }
+
     @Override
     public void run() {
         try {
@@ -33,12 +34,12 @@ class ThreadSocket extends Thread {
             String line;
             line = in.readLine();
             String request_method = line;
-                System.out.println("HTTP-HEADER: " + line);
+            System.out.println("HTTP-HEADER: " + line);
             line = "";
             // looks for post data
             int postDataI = -1;
             while ((line = in.readLine()) != null && (line.length() != 0)) {
-               // System.out.println("HTTP-HEADER: " + line);
+                // System.out.println("HTTP-HEADER: " + line);
                 if (line.indexOf("Content-Length:") > -1) {
                     postDataI = new Integer(
                             line.substring(

@@ -14,7 +14,7 @@ public class Server {
     private ServerSocket server = null;
     private boolean isRunning = true;
 
-    public Server(){
+    public Server() {
         try {
             server = new ServerSocket(port, 100, InetAddress.getByName(host));
         } catch (UnknownHostException e) {
@@ -24,7 +24,7 @@ public class Server {
         }
     }
 
-    public Server(String pHost, int pPort){
+    public Server(String pHost, int pPort) {
         host = pHost;
         port = pPort;
         try {
@@ -38,12 +38,12 @@ public class Server {
 
 
     //On lance notre serveur
-    public void open(){
+    public void open() {
 
         //Toujours dans un thread à part vu qu'il est dans une boucle infinie
-        Thread t = new Thread(new Runnable(){
-            public void run(){
-                while(isRunning == true){
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                while (isRunning == true) {
 
                     try {
                         //On attend une connexion d'un client
@@ -57,7 +57,7 @@ public class Server {
                         //Une fois reçue, on la traite dans un thread séparé
                         System.out.println("Connexion cliente reçue.");
                         //Thread t = new Thread(new ClientProcessor(client));
-                       // t.start();
+                        // t.start();
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -76,7 +76,7 @@ public class Server {
         t.start();
     }
 
-    public void close(){
+    public void close() {
         isRunning = false;
     }
 }
