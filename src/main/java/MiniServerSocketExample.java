@@ -40,11 +40,11 @@ class ThreadSocket extends Thread {
             int postDataI = -1;
             while ((line = in.readLine()) != null && (line.length() != 0)) {
                 // System.out.println("HTTP-HEADER: " + line);
-                if (line.indexOf("Content-Length:") > -1) {
+                if (line.contains("Content-Length:")) {
                     postDataI = new Integer(
                             line.substring(
                                     line.indexOf("Content-Length:") + 16,
-                                    line.length())).intValue();
+                                    line.length()));
                 }
             }
             String postData = "";
@@ -63,8 +63,8 @@ class ThreadSocket extends Thread {
             out.println("<H1>Welcome to the Mini Server</H1>");
             out.println("<H2>Request Method->" + request_method + "</H2>");
             out.println("<H2>Post->" + postData + "</H2>");
-            out.println("<form name=\"input\" action=\"form_submited\" method=\"post\">");
-            out.println("Username: <input type=\"text\" name=\"user\"><input type=\"submit\" value=\"Submit\"></form>");
+            //out.println("<form name=\"input\" action=\"form_submited\" method=\"post\">");
+            //out.println("Username: <input type=\"text\" name=\"user\"><input type=\"submit\" value=\"Submit\"></form>");
             out.close();
             insocket.close();
         } catch (IOException e) {
