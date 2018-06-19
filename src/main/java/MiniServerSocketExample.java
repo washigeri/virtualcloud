@@ -1,18 +1,50 @@
+import com.madhukaraphatak.sizeof.SizeEstimator;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicLong;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class MiniServerSocketExample {
     private static final int PORT = 8080;
+    static AtomicLong dataReceived = new AtomicLong(0L);
+    private static long t0;
+    private static boolean started = false;
+    private static boolean endloop = false;
 
     public static void main(String[] args) {
-        try {
-            ServerSocket server = new ServerSocket(PORT);
-            System.out.println("MiniServer active " + PORT);
-            while (true) {
-                new ThreadSocket(server.accept());
+        Thread runner = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket server = new ServerSocket(PORT);
+                    System.out.println("MiniServer active " + PORT);
+                    while (!endloop && !Thread.currentThread().isInterrupted()) {
+                        if (!started) {
+                            started = true;
+                            t0 = System.nanoTime();
+                        }
+                        new ThreadSocket(server.accept());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace(System.err);
+                }
             }
-        } catch (Exception e) {
+        };
+        runner.start();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            br.readLine();
+            System.out.println("Stopping");
+            endloop = true;
+            //runner.join();
+            runner.interrupt();
+            long t1 = System.nanoTime();
+            System.out.println("Ellipsed time : " + (t1 - t0));
+            System.out.println("Received data : " + dataReceived.get());
+        } catch (IOException e) {
+            e.printStackTrace(System.err);
         }
     }
 }
@@ -33,9 +65,7 @@ class ThreadSocket extends Thread {
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
             String line;
             line = in.readLine();
-            String request_method = line;
             System.out.println("HTTP-HEADER: " + line);
-            line = "";
             // looks for post data
             int postDataI = -1;
             while ((line = in.readLine()) != null && (line.length() != 0)) {
@@ -51,10 +81,12 @@ class ThreadSocket extends Thread {
             // read the post data
             if (postDataI > 0) {
                 char[] charArray = new char[postDataI];
+                //noinspection ResultOfMethodCallIgnored
                 in.read(charArray, 0, postDataI);
                 postData = new String(charArray);
             }
             System.out.println("Received data from " + insocket.getInetAddress() + " : " + postData);
+            MiniServerSocketExample.dataReceived.addAndGet(SizeEstimator.estimate(postData));
             out.println("HTTP/1.0 200 OK");
             out.println("Content-Type: text/html; charset=utf-8");
             out.println("Server: MINISERVER");

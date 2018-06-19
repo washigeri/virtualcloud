@@ -7,6 +7,12 @@
     <groupId>uqac.sr</groupId>
     <artifactId>virtualcloud</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.madhukaraphatak</groupId>
+            <artifactId>java-sizeof_2.11</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
 
 </project>
