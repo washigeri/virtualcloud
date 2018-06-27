@@ -6,6 +6,9 @@ import java.net.Socket;
 import java.util.concurrent.atomic.AtomicLong;
 
 @SuppressWarnings("SpellCheckingInspection")
+/**
+ * Classe exécutant le serveur Cloud. Simple serveur HTTP qui ne fait que recevoir les données.
+ */
 public class MiniServerSocketExample {
     private static final int PORT = 8080;
     static AtomicLong dataReceived = new AtomicLong(0L);
@@ -13,6 +16,11 @@ public class MiniServerSocketExample {
     private static boolean started = false;
     private static boolean endloop = false;
 
+    /**
+     * Méthode main
+     *
+     * @param args Paramètres de la ligne de commande. Inutilisés.
+     */
     public static void main(String[] args) {
         Thread runner = new Thread() {
             @Override
@@ -49,6 +57,9 @@ public class MiniServerSocketExample {
     }
 }
 
+/**
+ * Classe contenant un thread qui va gérer la connexion avec un seul unique client.
+ */
 class ThreadSocket extends Thread {
     private Socket insocket;
 
